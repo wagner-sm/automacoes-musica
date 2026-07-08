@@ -220,7 +220,7 @@
     <div class="toast-container" id="toast-container"></div>
 
     <script>
-        const WEBHOOK_URL = 'https://n8n-n8n.d4ecel.easypanel.host/webhook/unified';
+        const WEBHOOK_BASE = 'https://n8n-n8n.d4ecel.easypanel.host/webhook/';
         const TIMEOUT_MS = 10 * 60 * 1000; // 10 minutos
 
         const running = {};
@@ -271,7 +271,7 @@
             const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
             try {
-                const res = await fetch(WEBHOOK_URL, {
+                const res = await fetch(WEBHOOK_BASE + tipo, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ source: tipo, timestamp: new Date().toISOString() }),
