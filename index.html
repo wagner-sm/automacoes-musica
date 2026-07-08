@@ -220,7 +220,7 @@
     <div class="toast-container" id="toast-container"></div>
 
     <script>
-        const WEBHOOK_BASE = 'https://n8n-n8n.d4ecel.easypanel.host/webhook/';
+        const WEBHOOK_URL = 'https://n8n-n8n.d4ecel.easypanel.host/webhook/unified';
         const TIMEOUT_MS = 10 * 60 * 1000; // 10 minutos
 
         const running = {};
@@ -271,7 +271,7 @@
             const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
             try {
-                const res = await fetch(WEBHOOK_BASE + tipo, {
+                const res = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ source: tipo, timestamp: new Date().toISOString() }),
@@ -284,16 +284,10 @@
                     const ct = res.headers.get('content-type') || '';
                     if (ct.includes('application/json')) data = await res.json();
 
-                    // n8n pode retornar array de itens
-                    if (Array.isArray(data)) data = data[0];
-
-                    const isError = data && data.success === false;
-
                     const title = data?.title
-                        || (isError ? 'Erro' : (tipo === 'discogs' ? 'Discogs concluído!' : 'Setlist.fm concluído!'));
-                    const description = data?.message || data?.description || (isError ? 'Erro desconhecido.' : 'Workflow executado com sucesso.');
-
-                    toast({ title, description, variant: isError ? 'destructive' : undefined });
+                        || (tipo === 'discogs' ? 'Discogs concluído!' : 'Setlist.fm concluído!');
+                    const description = data?.message || data?.description || 'Workflow executado com sucesso.';
+                    toast({ title, description });
                 } else {
                     let errMsg = 'Erro HTTP ' + res.status;
                     try { const d = await res.json(); if (d?.message) errMsg = d.message; } catch (_) {}
