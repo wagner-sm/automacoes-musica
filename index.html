@@ -284,10 +284,16 @@
                     const ct = res.headers.get('content-type') || '';
                     if (ct.includes('application/json')) data = await res.json();
 
+                    // n8n pode retornar array de itens
+                    if (Array.isArray(data)) data = data[0];
+
+                    const isError = data && data.success === false;
+
                     const title = data?.title
-                        || (tipo === 'discogs' ? 'Discogs concluído!' : 'Setlist.fm concluído!');
-                    const description = data?.message || data?.description || 'Workflow executado com sucesso.';
-                    toast({ title, description });
+                        || (isError ? 'Erro' : (tipo === 'discogs' ? 'Discogs concluído!' : 'Setlist.fm concluído!'));
+                    const description = data?.message || data?.description || (isError ? 'Erro desconhecido.' : 'Workflow executado com sucesso.');
+
+                    toast({ title, description, variant: isError ? 'destructive' : undefined });
                 } else {
                     let errMsg = 'Erro HTTP ' + res.status;
                     try { const d = await res.json(); if (d?.message) errMsg = d.message; } catch (_) {}
