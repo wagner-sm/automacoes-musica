@@ -1,6 +1,6 @@
 # Automações de Música
 
-Aplicação simples para disparar automações de coleta de dados sobre música a partir de uma interface web, com autenticação básica e um Worker do Cloudflare para proteger o acesso e encaminar as requisições para o webhook do n8n.
+Aplicação simples para disparar automações de coleta de dados sobre música a partir de uma interface web, com autenticação básica e um Worker do Cloudflare para proteger o acesso e encaminar a[...] 
 
 ## Funcionalidades
 
@@ -16,13 +16,16 @@ Aplicação simples para disparar automações de coleta de dados sobre música 
 
 ```text
 .
+├── .assetsignore
+├── README.md
 ├── index.html
 ├── worker.js
 ├── wrangler.jsonc
 ├── functions/
-│   └── _middleware.js
-├── .assetsignore
-└── README.md
+│   ├── _middleware.js
+│   └── api/
+│       └── music.js
+└──
 ```
 
 ## Como funciona
