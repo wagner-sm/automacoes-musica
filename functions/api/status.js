@@ -21,6 +21,6 @@ export async function onRequestGet({ request, env }) {
       },
     });
   } catch {
-    return Response.json({ message: "Falha ao consultar status" }, { status: 502 });
+    return Response.json({ message: "Falha ao consultar Status" }, { status: 502 });
   }
 }
