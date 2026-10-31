@@ -289,11 +289,14 @@
 
                     const isError = data && data.success === false;
 
-                    const title = data?.title
-                        || (isError ? 'Erro' : (tipo === 'discogs' ? 'Discogs concluído!' : 'Setlist.fm concluído!'));
-                    const description = data?.message || data?.description || (isError ? 'Erro desconhecido.' : 'Workflow executado com sucesso.');
-
-                    toast({ title, description, variant: isError ? 'destructive' : undefined });
+                    // Sucesso não exibe mensagem; só mostra toast em caso de erro
+                    if (isError) {
+                        toast({
+                            title: data?.title || 'Erro',
+                            description: data?.message || data?.description || 'Erro desconhecido.',
+                            variant: 'destructive',
+                        });
+                    }
                 } else {
                     let errMsg = 'Erro HTTP ' + res.status;
                     try { const d = await res.json(); if (d?.message) errMsg = d.message; } catch (_) {}
